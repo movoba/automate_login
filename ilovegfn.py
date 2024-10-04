@@ -2,7 +2,7 @@ from datetime import datetime
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.common.alert import Alert
 from selenium.webdriver.support import expected_conditions as EC
 import csv
 import os
@@ -20,18 +20,15 @@ with open('daten.csv') as csvdatei:
         datumObj = datetime.strptime(row[0], '%Y-%m-%d').date()
         daten.append(datumObj)
         
-
-
-
 username = os.environ.get("username")
 password = os.environ.get("password")
 
-chrome_driver_path = "path_to_chrome_driver"
+chrome_driver_path = "/home/moritz/chromedriver-linux64/chromedriver"
 
 service = Service(executable_path=chrome_driver_path)
 
 options = webdriver.ChromeOptions()
-#Argument um die Chrome Sandbox zu deaktivieren. muss um zu laufen
+#Chrome Sandbox zu deaktivieren
 options.add_argument('--no-sandbox')  
 #damit Chrome nicht geschlossen wird     
 options.add_experimental_option("detach",True)
@@ -41,12 +38,14 @@ options.add_experimental_option('excludeSwitches', ['enable-logging'])
 driver = webdriver.Chrome(service=service, options=options)
 driver.implicitly_wait(3)
 driver.get("https://lernplattform.gfn.de/login/index.php")
+alert = Alert(driver)
 
 def automate_login(username, password):
     driver.find_element(By.ID, "username").send_keys(username)
     driver.find_element(By.ID, "password").send_keys(password)               
     log_in_button = driver.find_element(By.ID, "loginbtn")
     log_in_button.click()
+    alert.accept()
     standort = driver.find_element(By.ID, "flexRadioDefault2")
     standort.click()
     anmelden = driver.find_element(By.CSS_SELECTOR, "input[value='starten']")
@@ -59,7 +58,8 @@ def automate_logout(username, password):
     driver.find_element(By.ID, "password").send_keys(password)               
     log_in_button = driver.find_element(By.ID, "loginbtn")
     log_in_button.click()
-    abmelden = driver.find_element(By.CSS_SELECTOR, "a[href='?stoppen=1']")
+    #time.sleep(3)
+    abmelden = driver.find_element(By.CLASS_NAME, "btn-primary")
     abmelden.click()
     ausloggen()
 
