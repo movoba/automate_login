@@ -23,7 +23,7 @@ with open('daten.csv') as csvdatei:
 username = os.environ.get("username")
 password = os.environ.get("password")
 
-chrome_driver_path = "/home/moritz/chromedriver-linux64/chromedriver"
+chrome_driver_path = "Path"
 
 service = Service(executable_path=chrome_driver_path)
 
@@ -48,9 +48,11 @@ def automate_login(username, password):
     alert.accept()
     standort = driver.find_element(By.ID, "flexRadioDefault2")
     standort.click()
-    anmelden = driver.find_element(By.CSS_SELECTOR, "input[value='starten']")
+    anmelden = driver.find_element(By.CLASS_NAME, "btn-primary")
     anmelden.click()
     ausloggen()
+    back_to_log_in = driver.find_element(By.CLASS_NAME, "login")
+    back_to_log_in.click()
 
 
 def automate_logout(username, password):
@@ -58,10 +60,12 @@ def automate_logout(username, password):
     driver.find_element(By.ID, "password").send_keys(password)               
     log_in_button = driver.find_element(By.ID, "loginbtn")
     log_in_button.click()
-    #time.sleep(3)
+    time.sleep(3)
     abmelden = driver.find_element(By.CLASS_NAME, "btn-primary")
     abmelden.click()
     ausloggen()
+    back_to_log_in = driver.find_element(By.CLASS_NAME, "login")
+    back_to_log_in.click()
 
 def ausloggen():
     dropdown = driver.find_element(By.ID, "user-menu-toggle")
