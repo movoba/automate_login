@@ -7,3 +7,4 @@ logging ---> für die logfile falls es abbrücher gibt
 time ---> um das Programm nicht nonstop auszuführen
 
 
+first repo got deleted...
