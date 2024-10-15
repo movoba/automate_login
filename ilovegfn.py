@@ -52,9 +52,11 @@ def automate_login(username, password):
     log_in_button = driver.find_element(By.ID, "loginbtn")
     log_in_button.click()
     alert.accept()
-    aside = driver.find_element(By.CSS_SELECTOR, "button[title='Blockleiste öffnen']")
-    if aside:
+    try:
+        aside = driver.find_element(By.CSS_SELECTOR, "button[title='Blockleiste öffnen']")
         aside.click()
+    except:
+        print("Kein aside vorhanden")
     standort = driver.find_element(By.CSS_SELECTOR, "input[value='2']")  #(By.ID, "flexRadioDefault2")
     standort.click()
     anmelden = driver.find_element(By.CLASS_NAME, "btn-primary")
@@ -70,9 +72,11 @@ def automate_logout(username, password):
     driver.find_element(By.ID, "password").send_keys(password)               
     log_in_button = driver.find_element(By.ID, "loginbtn")
     log_in_button.click()
-    aside = driver.find_element(By.CSS_SELECTOR, "button[title='Blockleiste öffnen']")
-    if aside:
+    try:
+        aside = driver.find_element(By.CSS_SELECTOR, "button[title='Blockleiste öffnen']")
         aside.click()
+    except:
+        print("Kein aside vorhanden")
     time.sleep(3)
     abmelden = driver.find_element(By.CLASS_NAME, "btn-primary")
     abmelden.click()
