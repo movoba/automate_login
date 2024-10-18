@@ -64,6 +64,7 @@ def automate_login(username, password):
     ausloggen()
     back_to_log_in = driver.find_element(By.CLASS_NAME, "login")
     back_to_log_in.click()
+    driver.find_element(By.ID, "username").clear()
 
 
 
@@ -83,7 +84,7 @@ def automate_logout(username, password):
     ausloggen()
     back_to_log_in =driver.find_element(By.CLASS_NAME, "login")
     back_to_log_in.click()
-
+    driver.find_element(By.ID, "username").clear()
 
 
 def ausloggen():
