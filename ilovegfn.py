@@ -57,7 +57,7 @@ def automate_login(username, password):
         aside.click()
     except:
         print("Kein aside vorhanden")
-    standort = driver.find_element(By.CSS_SELECTOR, "input[value='2']")  #(By.ID, "flexRadioDefault2")
+    standort = driver.find_element(By.CSS_SELECTOR, "input[name='homeo'][value='2']")
     standort.click()
     anmelden = driver.find_element(By.CLASS_NAME, "btn-primary")
     anmelden.click()
