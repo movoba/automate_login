@@ -6,14 +6,15 @@ from selenium.webdriver.common.alert import Alert
 import csv
 import os
 import schedule
-
+import logging
 import time
 
+logging.basicConfig(filename='error.log', level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 heute = datetime.now().date()
 daten = []
 
-with open('daten.csv') as csvdatei:
+with open('daten.csv',  encoding='utf-8') as csvdatei:
     datum = csv.reader(csvdatei)
     for row in datum:
         datumObj = datetime.strptime(row[0], '%Y-%m-%d').date()
@@ -22,36 +23,37 @@ with open('daten.csv') as csvdatei:
 
 username = os.environ.get("username")
 password = os.environ.get("password")
+if not username or not password:
+    logging.error("Umgebungsvariablen fuer Benutzername oder Passwort fehlen.")
+    raise ValueError("Benutzername oder Passwort sind nicht gesetzt.")
 
-chrome_driver_path = "PATH"
+def driver_starten():
+    try:
+        service = Service("Path_to_webdriver")
+        options = webdriver.ChromeOptions()
+        options.add_argument('--no-sandbox') 
+        options.add_experimental_option("detach",True)
+        options.add_experimental_option('excludeSwitches', ['enable-logging'])
+        driver = webdriver.Chrome(service=service, options=options)
+        driver.implicitly_wait(4)
+        logging.INFO("Webdriver laeuft")
+        return driver
+    except:
+        logging.error(f"Fehler beim Laden des drivers: {Exception}")
 
-service = Service(executable_path=chrome_driver_path)
+driver = driver_starten()
 
-options = webdriver.ChromeOptions()
-#Argument um die Chrome Sandbox zu deaktivieren. muss um zu laufen
-options.add_argument('--no-sandbox') 
-
-#nur wenn stabil läuuft. fenster öffnet sich dann nicht mehr
-#options.add_argument("--headless")
-
-
-#damit Chrome nicht geschlossen wird     
-options.add_experimental_option("detach",True)
-#unnötiges logging ausschließen
-options.add_experimental_option('excludeSwitches', ['enable-logging'])
-
-
-driver = webdriver.Chrome(service=service, options=options)
-driver.implicitly_wait(3)
-driver.get("https://lernplattform.gfn.de/login/index.php")
-alert = Alert(driver)
-
-def automate_login(username, password):
+def automate_login(username, password, driver):
+    driver.get("https://lernplattform.gfn.de/login/index.php")
     driver.find_element(By.ID, "username").send_keys(username)
     driver.find_element(By.ID, "password").send_keys(password)        
     log_in_button = driver.find_element(By.ID, "loginbtn")
     log_in_button.click()
-    alert.accept()
+    try:
+        alert = Alert(driver)
+        alert.accept()
+    except NoAlertPresentException:
+        pass
     try:
         aside = driver.find_element(By.CSS_SELECTOR, "button[title='Blockleiste öffnen']")
         aside.click()
@@ -102,4 +104,5 @@ if heute in daten:
     
 while True:
     schedule.run_pending()
+    logging.info("Warte auf naechste geplante Aufgabe...")
     time.sleep(1)
