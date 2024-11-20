@@ -37,10 +37,10 @@ def driver_starten():
         driver = webdriver.Chrome(service=service, options=options)
         driver.implicitly_wait(4)
         driver.get("https://lernplattform.gfn.de/login/index.php")
-        logging.INFO("Webdriver laeuft")
+        logging.info("Webdriver laeuft")
         return driver
-    except:
-        logging.error(f"Fehler beim Laden des drivers: {Exception}")
+    except Exception as e:
+        logging.error(f"Fehler beim Laden des drivers: {e}")
 
 driver = driver_starten()
 
