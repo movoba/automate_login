@@ -36,6 +36,7 @@ def driver_starten():
         options.add_experimental_option('excludeSwitches', ['enable-logging'])
         driver = webdriver.Chrome(service=service, options=options)
         driver.implicitly_wait(4)
+        driver.get("https://lernplattform.gfn.de/login/index.php")
         logging.INFO("Webdriver laeuft")
         return driver
     except:
@@ -44,7 +45,7 @@ def driver_starten():
 driver = driver_starten()
 
 def automate_login(username, password, driver):
-    driver.get("https://lernplattform.gfn.de/login/index.php")
+    
     driver.find_element(By.ID, "username").send_keys(username)
     driver.find_element(By.ID, "password").send_keys(password)        
     log_in_button = driver.find_element(By.ID, "loginbtn")
