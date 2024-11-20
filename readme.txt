@@ -1,10 +1,8 @@
-Module die ggf installiert und importiert werden müssen werden müssen:
+Zu installierende Module(pip install selenium, schedule)
 
 selenium ---> für die Browserinteraktion
-os ---> um mit dem OperatingSystem ggf Werte auszutauschen
 schedule ---> Planer für die zeitliche Ausführung
-logging ---> für die logfile falls es abbrücher gibt
-time ---> um das Programm nicht nonstop auszuführen
+
+Ein kleiner Bot der die Zeiterfassung auf einer Lernplattform erleichtern soll. Das Skript funktioniert auf der Moodle-Plattform und kann dort die Zeiterfassung automatiesieren. Zu installieren ist hier ein, zum Browser passender, webdriver, z.B der chromewedriver (https://developer.chrome.com/docs/chromedriver/downloads?hl=de). Um Logindaten nicht in das Skript schreiben zu müssen, sollte unbedingt eine .file oder eine .env file erstellt werden. Die csv-Datei sollte auch individuell angepasst werden.
 
 
-first repo got deleted...
