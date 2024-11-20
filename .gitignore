@@ -1,0 +1,4 @@
+# Ignoriere die virtuelle Umgebung
+entwicklung/
+.bash_profile/
+error.log/
