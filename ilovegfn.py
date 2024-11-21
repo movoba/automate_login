@@ -98,7 +98,7 @@ def ausloggen():
 
 
 if heute in daten:
-        schedule.every().day.at("08:21").do(automate_login, username, password)
+        schedule.every().day.at("08:21").do(automate_login, username, password, driver)
         schedule.every().day.at("16:31").do(automate_logout, username, password)
 
 
