@@ -1,3 +1,4 @@
+#! /usr/bin/python3
 from datetime import datetime
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
@@ -105,5 +106,5 @@ if heute in daten:
     
 while True:
     schedule.run_pending()
-    logging.info("Warte auf naechste geplante Aufgabe...")
+    #logging.info("Warte auf naechste geplante Aufgabe...")
     time.sleep(1)
