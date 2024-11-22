@@ -4,6 +4,7 @@ from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.alert import Alert
+from selenium.common.exceptions import NoAlertPresentException
 import csv
 import os
 import schedule
