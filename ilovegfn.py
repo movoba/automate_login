@@ -31,7 +31,7 @@ if not username or not password:
     logging.error("Umgebungsvariablen fuer Benutzername oder Passwort fehlen.")
     raise ValueError("Benutzername oder Passwort sind nicht gesetzt.")
 
-def driver_starten():
+def driver_starten(path_to_web_driver):
     try:
         service = Service(path_to_webdriver)
         options = webdriver.ChromeOptions()
