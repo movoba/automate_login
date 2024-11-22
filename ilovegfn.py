@@ -65,14 +65,14 @@ def automate_login(username, password, driver):
     standort.click()
     anmelden = driver.find_element(By.CLASS_NAME, "btn-primary")
     anmelden.click()
-    ausloggen()
+    ausloggen(driver)
     back_to_log_in = driver.find_element(By.CLASS_NAME, "login")
     back_to_log_in.click()
     driver.find_element(By.ID, "username").clear()
 
 
 
-def automate_logout(username, password):
+def automate_logout(username, password, driver):
     driver.find_element(By.ID, "username").send_keys(username)
     driver.find_element(By.ID, "password").send_keys(password)               
     log_in_button = driver.find_element(By.ID, "loginbtn")
@@ -85,13 +85,13 @@ def automate_logout(username, password):
     time.sleep(3)
     abmelden = driver.find_element(By.CLASS_NAME, "btn-primary")
     abmelden.click()
-    ausloggen()
+    ausloggen(driver)
     back_to_log_in =driver.find_element(By.CLASS_NAME, "login")
     back_to_log_in.click()
     driver.find_element(By.ID, "username").clear()
 
 
-def ausloggen():
+def ausloggen(driver):
     dropdown = driver.find_element(By.ID, "user-menu-toggle")
     dropdown.click()
     item_select = driver.find_element(By.LINK_TEXT, "Logout")
@@ -100,7 +100,7 @@ def ausloggen():
 
 if heute in daten:
         schedule.every().day.at("08:21").do(automate_login, username, password, driver)
-        schedule.every().day.at("16:31").do(automate_logout, username, password)
+        schedule.every().day.at("16:31").do(automate_logout, username, password, driver)
 
 
     
