@@ -24,13 +24,15 @@ with open('daten.csv',  encoding='utf-8') as csvdatei:
 
 username = os.environ.get("username")
 password = os.environ.get("password")
+path_to_webdriver = os.environ.get("path_to driver")
+
 if not username or not password:
     logging.error("Umgebungsvariablen fuer Benutzername oder Passwort fehlen.")
     raise ValueError("Benutzername oder Passwort sind nicht gesetzt.")
 
 def driver_starten():
     try:
-        service = Service("Path_to_webdriver")
+        service = Service(path_to_webdriver)
         options = webdriver.ChromeOptions()
         options.add_argument('--no-sandbox') 
         options.add_experimental_option("detach",True)
@@ -46,7 +48,6 @@ def driver_starten():
 driver = driver_starten()
 
 def automate_login(username, password, driver):
-    
     driver.find_element(By.ID, "username").send_keys(username)
     driver.find_element(By.ID, "password").send_keys(password)        
     log_in_button = driver.find_element(By.ID, "loginbtn")
@@ -101,10 +102,9 @@ def ausloggen(driver):
 if heute in daten:
         schedule.every().day.at("08:21").do(automate_login, username, password, driver)
         schedule.every().day.at("16:31").do(automate_logout, username, password, driver)
-
-
-    
-while True:
-    schedule.run_pending()
-    #logging.info("Warte auf naechste geplante Aufgabe...")
-    time.sleep(1)
+        
+if __name__ == "__main__":
+    while True:
+        schedule.run_pending()
+        #logging.info("Warte auf naechste geplante Aufgabe...")
+        time.sleep(1)
