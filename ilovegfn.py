@@ -46,7 +46,7 @@ def driver_starten(path_to_web_driver):
     except Exception as e:
         logging.error(f"Fehler beim Laden des drivers: {e}")
 
-driver = driver_starten()
+driver = driver_starten(path_to_webdriver)
 
 def automate_login(username, password, driver):
     driver.find_element(By.ID, "username").send_keys(username)
