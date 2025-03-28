@@ -25,7 +25,6 @@ def save_zugangsdaten(daten: dict):
     fernet = Fernet(key)
 
     encrypted_pw = fernet.encrypt(daten["passwort"].encode())
-
     with open(PW_FILE, "wb") as f:
         f.write(encrypted_pw)
 
