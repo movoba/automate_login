@@ -131,7 +131,7 @@ class LoginFrame:
         self.button_frm_two.pack_forget()
         self.frm.pack(fill=BOTH, expand=True)
 
-    def zugangdaten(self, username: str, passwort: str):
+    def zugangdaten(self):
         name = self.username.get()
         passw = self.passwort.get()
 
@@ -143,7 +143,7 @@ class LoginFrame:
         if not self.username.get().strip() or not self.passwort.get().strip():
             messagebox.showerror("Fehler", "Bitte alle Felder ausfüllen!")
         else:    
-            self.zugangdaten(self.username, self.passwort)
+            self.zugangdaten()
             self.frm_two.pack_forget()
             self.button_frm_two.pack_forget()
             self.frm_three.pack(fill=BOTH, expand=True)
