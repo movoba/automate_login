@@ -1,7 +1,12 @@
 import tkinter as tk
 from tkinter import BOTH, Label, Button, X, BOTTOM, LEFT, Entry, messagebox
 from encrypt import save_zugangsdaten, load_zugangsdaten
+from ilovegfn import WebNav
+from datetime import datetime
+import csv
+import schedule
 import time
+
 
 class LoginFrame:
     def __init__(self, root):
@@ -46,7 +51,7 @@ class LoginFrame:
         self.button_weiter = Button(
             self.button_frm, text="Weiter", command=self.zeige_frame2
         )
-        self.root.bind('<Return>', lambda event: self.button_weiter.invoke())
+        self.root.bind("<Return>", lambda event: self.button_weiter.invoke())
         self.button_weiter.pack(pady=5, padx=10, side=LEFT)
 
         # ---placeholder damit nichts nach rechts rutscht----
@@ -87,7 +92,7 @@ class LoginFrame:
         button_weiter_two = Button(
             self.button_frm_two, text="Weiter", command=self.abschließen_button
         )
-        self.root.bind('<Return>', lambda event: self.button_ende.invoke())
+        self.root.bind("<Return>", lambda event: self.button_ende.invoke())
         button_weiter_two.pack(pady=5, padx=10, side=LEFT)
 
         # ---placeholder damit nichts nach rechts rutscht----
@@ -116,9 +121,14 @@ class LoginFrame:
             self.frm_three, text="Das hat doch wunderbar geklappt", bg="white"
         )
         label_three.pack()
-        self.button_ende = Button(self.frm_three, text="Ende", command=self.root.quit)
+        self.button_ende = Button(self.frm_three, text="Ende", command=self.beende_und_startroutine)
         self.button_ende.pack(side=BOTTOM, padx=10)
 
+    #mit einem thread muss gui erst beendet werden
+    def beende_und_startroutine(self):
+        self.root.quit()
+        self.webNav_start()
+        
     def zeige_frame2(self):
         self.frm.pack_forget()
         self.button_frm.pack_forget()
@@ -139,24 +149,31 @@ class LoginFrame:
         save_zugangsdaten(daten)
 
     def abschließen_button(self):
-        #strip gegen leerzeichen
+        # strip gegen leerzeichen
         if not self.username.get().strip() or not self.passwort.get().strip():
             messagebox.showerror("Fehler", "Bitte alle Felder ausfüllen!")
-        else:    
+        else:
             self.zugangdaten()
             self.frm_two.pack_forget()
             self.button_frm_two.pack_forget()
             self.frm_three.pack(fill=BOTH, expand=True)
 
-    def beenden_button_click(self):
-        # vielleicht später noch wichtig für speichern oder so
-        self.root.quit()
+    def webNav_start(self):
+        heute = datetime.now().date()
+        daten = []
+        with open("daten.csv", encoding="utf-8") as csvdatei:
+            datum = csv.reader(csvdatei)
+            for row in datum:
+                datumObj = datetime.strptime(row[0], "%Y-%m-%d").date()
+                daten.append(datumObj)
+        
 
-def main():
-    root = tk.Tk()
-    app = LoginFrame(root)
-    root.mainloop()
+        if heute in daten:
+            webnav = WebNav(load_zugangsdaten())
+            schedule.every().day.at("08:21").do(webnav.automate_login)
+            schedule.every().day.at("16:31").do(webnav.automate_logout)
 
-
-if __name__ == "__main__":
-    main()
+            while True:
+                schedule.run_pending()
+                #logging.info("Warte auf naechste geplante Aufgabe...")
+                time.sleep(1)
